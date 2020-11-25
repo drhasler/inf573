@@ -1,12 +1,14 @@
 import numpy as np
 import cv2
+import glob
 
 from skimage.measure import label
 from skimage.morphology import skeletonize
 
 cap = cv2.VideoCapture(0) # cam feed
+cap.set(cv2.CAP_PROP_EXPOSURE,-4)
 # backSub = cv2.createBackgroundSubtractorMOG2()
-ker = np.ones((25,25),np.uint8)
+ker = np.ones((15,15),np.uint8)
 
 def mask_th(img, th=0):
     return 255 * np.uint8(img > th)
@@ -24,7 +26,8 @@ bgimg = None
 def diff(frame):
     if bgimg is None: return frame
     d = cv2.absdiff(frame, bgimg)
-    m = mask_th(d, 10)
+    cv2.imshow('background',d)
+    m = mask_th(d, 30)
     m = cv2.erode(cv2.dilate(m, ker), ker) # closing
     m = connected_comp(m)
     return m
@@ -37,8 +40,16 @@ def connected_comp(mask):
     labels = np.uint8(labels)
     cmap = cv2.applyColorMap(labels, 2)
     x = np.argsort(np.bincount(labels.flat))
-    return labels == x[-2]
+    # print(labels)
+    # print(x)
+    if len(x) > 2:
+        return labels == x[-2]
+    return labels == x[0]
     return cmap
+
+L = glob.glob('data/*png')
+n = 0 if len(L) == 0 else int(L[0][-5])
+print(n)
 
 while True:
     ret, frame = cap.read()
@@ -49,9 +60,16 @@ while True:
 
     cv2.imshow('cam1', frame)
     cv2.imshow('out', out)
+    # if bgimg is not None:
+        
     k = cv2.waitKey(1)
     if k == ord('b'):
         bgimg = frame
     if k == ord('q'):
         break
+    if k == ord('s'):           # create a new picture
+        n += 1
+        cv2.imwrite("Data/Test" + str(n) + ".png",out)
+    if k == ord('o'):           # overwrite
+        cv2.imwrite("Data/Test" + str(n) + ".png",out)
 
