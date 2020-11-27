@@ -13,7 +13,7 @@ def bg_diff(img, bg):
     - m1 normalized abs diff (float)
     - m2 mask (float)
     """
-    m1 = cv2.absdiff(frame, bg)
+    m1 = cv2.absdiff(img, bg)
     m1 = m1.sum(axis=2) / (255*3)
     m2 = 1. * ( m1 > .1)
 

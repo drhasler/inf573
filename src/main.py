@@ -21,7 +21,7 @@ while True:
         cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
         m2[y:y+h,x:x+w] = 0
 
-    body_width(m2,frame)
+    body_width(m2)
     cv2.imshow('cam', frame)
     cv2.imshow('mask', m2)
 
