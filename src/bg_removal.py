@@ -47,9 +47,6 @@ def connected_comp(mask):
     return labels == x[0]
     return cmap
 
-L = glob.glob('data/*png')
-n = 0 if len(L) == 0 else int(L[0][-5])
-print(n)
 
 while True:
     ret, frame = cap.read()
@@ -67,9 +64,4 @@ while True:
         bgimg = frame
     if k == ord('q'):
         break
-    if k == ord('s'):           # create a new picture
-        n += 1
-        cv2.imwrite("Data/Test" + str(n) + ".png",out)
-    if k == ord('o'):           # overwrite
-        cv2.imwrite("Data/Test" + str(n) + ".png",out)
 
