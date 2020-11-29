@@ -41,14 +41,16 @@ def save_video():
 def remove_background(frame,bg):
     m1,m2 = bg_diff(frame, bg)
     faces = detect_faces(frame)
+    # print(faces)
+    C = (0,0)
     for (x,y,w,h) in faces:
         y -= int(h*.3)
         h = int(h*1.3)
         cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
         # m2[y:y+h,x:x+w] = 0
-
-    # body_width(m2)
-    return m1,m2,frame
+        C = (x+int(w/2),y+int(h/2))         # center of the head
+    cv2.circle(frame,C,3,(0,255,0),-1)
+    return m1,m2,frame, C
 
 
 def main():
@@ -57,6 +59,7 @@ def main():
         ret, frame = cap.read()
 
         m1,m2,frame = remove_background(frame,bg)
+        body_width(m2)
         cv2.imshow('cam', frame)
         cv2.imshow('mask', m2)
 
