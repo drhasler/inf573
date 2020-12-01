@@ -4,7 +4,7 @@ import cv2
 from np_util import sig
 from cv_util import timed
 
-def bg_diff(img, bg):
+def bg_diff(img, bg,threshold = .1):
     """ masks out the background
     args:
     - img h,w uint8 col
@@ -15,7 +15,7 @@ def bg_diff(img, bg):
     """
     m1 = cv2.absdiff(img, bg)
     m1 = m1.sum(axis=2) / (255*3)
-    m2 = 1. * ( m1 > .1)
+    m2 = 1. * ( m1 > threshold)
 
     # m1 = sig(40*(m1-.1))
     return m1, m2

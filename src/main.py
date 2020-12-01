@@ -38,8 +38,8 @@ def save_video():
 
 # save_video()
 
-def remove_background(frame,bg):
-    m1,m2 = bg_diff(frame, bg)
+def remove_background(frame,bg,threshold=.1):
+    m1,m2 = bg_diff(frame, bg,threshold)
     faces = detect_faces(frame)
     # print(faces)
     C = (0,0)
@@ -58,7 +58,7 @@ def main():
     while True:
         ret, frame = cap.read()
 
-        m1,m2,frame = remove_background(frame,bg)
+        m1,m2,frame,_ = remove_background(frame,bg)
         body_width(m2)
         cv2.imshow('cam', frame)
         cv2.imshow('mask', m2)
