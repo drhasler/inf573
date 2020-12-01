@@ -58,11 +58,8 @@ def main():
     while True:
         ret, frame = cap.read()
 
-<<<<<<< HEAD
         m1,m2,frame,_ = remove_background(frame,bg)
-=======
-        m1,m2,frame,C = remove_background(frame,bg)
->>>>>>> bc8a7e7df9a7e00cd239ea3b941a4d6c729d50dc
+
         body_width(m2)
         cv2.imshow('cam', frame)
         cv2.imshow('mask', m2)
