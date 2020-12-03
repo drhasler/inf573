@@ -3,6 +3,11 @@ import matplotlib.pyplot as plt
 import cv2
 import glob
 
+import meshcat
+import meshcat.geometry as g
+import meshcat.transformations as tf
+import webbrowser
+
 from cv_util import timed, cap
 from np_util import quant
 from filters import bg_diff
@@ -55,14 +60,34 @@ def remove_background(frame,bg,threshold=.1):
 
 def main():
     bg = timed('background')
+
+    vis = meshcat.Visualizer(zmq_url="tcp://127.0.0.1:6000")
+    # open: http://127.0.0.1:7000/static/
+
+    vis["robot"].delete()
+
+    vis["robot"].set_object(g.Box([0.15, 0.35, 0.4]))
+    vis["robot"]["head"].set_object(g.Box([0.2, 0.2, 0.2]))
+    vis["robot"]["head"].set_transform(tf.translation_matrix([0, 0, 0.32]))
+    vis["robot"]["arm_l"].set_object(g.Box([0.1, 0.1, 0.3]))
+    vis["robot"]["arm_l"].set_transform(tf.translation_matrix([0, .25, 0]))
+    vis["robot"]["arm_r"].set_object(g.Box([0.1, 0.1, 0.3]))
+    vis["robot"]["arm_r"].set_transform(tf.translation_matrix([0, -.25, 0]))
     while True:
         ret, frame = cap.read()
 
-        m1,m2,frame,_ = remove_background(frame,bg)
+        m1,m2,frame,C = remove_background(frame,bg)
+
+        if (C[0] != 0):
+            C = np.array(C)
+            C = C - np.array([303.87548638, 182.57587549])
+            C = C / 200
+            print("is moving")
+            vis["robot"].set_transform(tf.translation_matrix([0,C[0],-C[1]]))
 
         body_width(m2)
         cv2.imshow('cam', frame)
-        cv2.imshow('mask', m2)
+        # cv2.imshow('mask', m2)
 
         k = cv2.waitKey(1)
         if k == ord('h'):
@@ -82,4 +107,5 @@ def main():
             save_image(k,frame)
 
 # main()
-# run: python -c 'import main; main.main()'
+# run: meshcat-server
+# run in another terminal: python -c 'import main; main.main()'
