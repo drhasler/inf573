@@ -44,7 +44,7 @@ def save_video():
 # save_video()
 
 def remove_background(frame,bg,threshold=.1):
-    m1,m2 = bg_diff(frame, bg,threshold)
+    # m1,m2 = bg_diff(frame, bg,threshold)
     faces = detect_faces(frame)
     # print(faces)
     C = (0,0)
@@ -54,8 +54,8 @@ def remove_background(frame,bg,threshold=.1):
         cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
         # m2[y:y+h,x:x+w] = 0
         C = (x+int(w/2),y+int(h/2))         # center of the head
-    cv2.circle(frame,C,3,(0,255,0),-1)
-    return m1,m2,frame, C
+    # cv2.circle(frame,C,3,(0,255,0),-1)
+    # return m1,m2,frame, C
 
 
 def main():
@@ -68,10 +68,10 @@ def main():
 
     vis["robot"].set_object(g.Box([0.15, 0.35, 0.4]))
     vis["robot"]["head"].set_object(g.Box([0.2, 0.2, 0.2]))
-    vis["robot"]["head"].set_transform(tf.translation_matrix([0, 0, 0.32]))
     vis["robot"]["arm_l"].set_object(g.Box([0.1, 0.1, 0.3]))
-    vis["robot"]["arm_l"].set_transform(tf.translation_matrix([0, .25, 0]))
     vis["robot"]["arm_r"].set_object(g.Box([0.1, 0.1, 0.3]))
+    vis["robot"]["head"].set_transform(tf.translation_matrix([0, 0, 0.32]))
+    vis["robot"]["arm_l"].set_transform(tf.translation_matrix([0, .25, 0]))
     vis["robot"]["arm_r"].set_transform(tf.translation_matrix([0, -.25, 0]))
     while True:
         ret, frame = cap.read()

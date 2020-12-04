@@ -1,7 +1,7 @@
 from time import time
 import cv2
 
-cap = cv2.VideoCapture(0) # cam feed
+# cap = cv2.VideoCapture(0) # cam feed
 
 """ cv2 cheatsheet
 ret, frame = cap.read()
@@ -10,6 +10,12 @@ cv2.imwrite('img.jpg', img)
 cv2.imshow('window', img)
 cv2.destroyWindow('window')
 """
+
+def safe_show(img):
+    """ safe cast for cv2 """
+    if img.dtype == np.bool:
+        return np.uint8(img)
+    return img
 
 def addText(img, txt,
         origin=(50, 50),
