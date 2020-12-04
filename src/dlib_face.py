@@ -1,7 +1,7 @@
 import numpy as np
 import dlib
 
-from dlib_util import *
+from rect_util import *
 
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor('../data/shape_predictor_68_face_landmarks.dat')
@@ -13,7 +13,7 @@ def shape_array(shape, dtype=np.int):
         arr[i] = shape.part(i).x, shape.part(i).y
     return arr
 
-def face_features(img):
+def face_features(frame):
     """ ears lr, eyes lr, mouth lr, nose """
     rects = detector(frame)
     if not rects: return None

@@ -19,3 +19,6 @@ class Visualizer:
 
     def set_pos(self, pos):
         ...
+    def look_towards(self, vec):
+        # https://github.com/rdeits/meshcat-python/blob/master/src/meshcat/transformations.py#L1049
+        ...

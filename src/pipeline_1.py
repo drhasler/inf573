@@ -1,10 +1,10 @@
 import numpy as np
 import cv2
 
-from main import direct
-from face import face_rect, face_features, draw_point, draw_rect
-from edges import edges
 from loop import webcam
+from dlib_face import face_features
+from cv_util import draw_point
+from rect_util import cen2norm
 
 def process(img):
     
@@ -17,18 +17,17 @@ def process(img):
     for p in pts:
         draw_point(img, *p)
 
-    # TODO make these relative values
     m = pts.mean(axis=0)
     m[1] -= 60 # forehead
-    # r = normalize((*m, 10,10))
-    r = normalize((*m, 200,10))
-    frag = img[r[1]:r[3], r[0]:r[2]]
+    # r = cen2norm((*m, 10,10))
+    r = cen2norm((*m, 200,10))
+    # frag = img[r[1]:r[3], r[0]:r[2]]
     # report['col'] = frag.mean()
 
-    return [img, frag], None
+    return [img], None
 
 def status(ims, ret):
     print(ret)
 
 if __name__ == "__main__":
-    direct(process, {'s':status} )
+    webcam(process, {'s':status} )

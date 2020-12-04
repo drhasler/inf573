@@ -23,7 +23,7 @@ def details(ims, res):
     PL = mp_pose.PoseLandmark
     G = PL # for debugging
     print(pl[PL.NOSE], pl[PL.LEFT_EAR], pl[PL.RIGHT_EAR])
-
+    # Z seems pretty bad, can we work only with x,y ?
 
 if __name__ == "__main__":
     from loop import webcam

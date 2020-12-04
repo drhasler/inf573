@@ -17,6 +17,13 @@ def safe_show(img):
         return np.uint8(255*img)
     return img
 
+def draw_point(frame, x, y):
+    cv2.circle(frame, (int(x), int(y)), radius=0, color=(255), thickness=-1)
+
+def draw_rect(frame, rect):
+    x1,y1,x2,y2 = map(int, rect)
+    cv2.rectangle(frame, (x1,y1), (x2,y2), 255, -1)
+
 def addText(img, txt,
         origin=(50, 50),
         scale=1,
