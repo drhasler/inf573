@@ -12,7 +12,7 @@ cv2.destroyWindow('window')
 """
 
 def safe_show(img):
-    """ safe cast for cv2 """
+    """ safe cast for cv2.imshow """
     if img.dtype == np.bool:
         return np.uint8(255*img)
     return img

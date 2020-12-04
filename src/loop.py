@@ -19,9 +19,9 @@ def webcam(proc, kb={}):
         k = chr(k)
         if k == 'q':
             break
-        if k in cb:
-            cb[k](ims, res)
+        if k in kb:
+            kb[k](ims, res)
 
-    cap.close()
+    cap.release()
     cv2.destroyAllWindows()
 
