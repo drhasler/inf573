@@ -1,4 +1,5 @@
 from np_util import angle
+import numpy as np
 
 def criss_cross(a,b,c):
     ab, ac, bc = b-a, c-a, c-b
@@ -17,3 +18,20 @@ def body_width(m):
     l = pts[0]
     r = pts[-1]
     print(r-l)
+
+def head_direction(pts):
+    """
+    args: lr ears, nose
+    returns: yaw pitch roll
+    """
+    lear,rear,nose = pts
+    d1 = rear-lear
+    d2 = nose-lear
+    yaw = ( np.dot(d1,d2) / np.dot(d1,d1) - .5 ) * np.pi
+    pitch = np.cross(d1,d2) / np.dot(d1,d1) * np.pi # some factor here
+    roll = np.arctan2(*d1) + np.pi/2
+    return np.array([
+        .7*yaw, -.6-pitch, roll
+    ])
+
+

@@ -14,8 +14,11 @@ def shape_array(shape, dtype=np.int):
     return arr
 
 def face_features(frame):
-    """ ears lr, eyes lr, mouth lr, nose """
     rects = detector(frame)
     if not rects: return None
     pts = shape_array(predictor(frame, rects[0]))
-    return pts[[16,0,45,36,54,48,30]]
+    # ears lr, eyes lr, mouth lr, nose 
+    # 16,0,45,36,54,48,30
+    pts = pts[[16,0,30]]
+    return pts
+

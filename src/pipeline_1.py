@@ -5,6 +5,11 @@ from loop import webcam
 from dlib_face import face_features
 from cv_util import draw_point
 from rect_util import cen2norm
+from homemade import head_direction
+from visualizer import Visualizer
+
+vis = Visualizer()
+model = { "ypr": np.zeros(3) }
 
 def process(img):
     
@@ -17,12 +22,15 @@ def process(img):
     for p in pts:
         draw_point(img, *p)
 
-    m = pts.mean(axis=0)
-    m[1] -= 60 # forehead
-    # r = cen2norm((*m, 10,10))
-    r = cen2norm((*m, 200,10))
-    # frag = img[r[1]:r[3], r[0]:r[2]]
-    # report['col'] = frag.mean()
+    pos = (pts.mean(0) - [360,200]) / (-200);
+    vis.set_pos(pos)
+
+    ypr = model['ypr']
+    alpha = .3 # change dynamically
+    ypr = (1-alpha) * ypr + alpha * head_direction(pts)
+    vis.look_towards(*ypr)
+    model['ypr'] = ypr
+    print(ypr)
 
     return [img], None
 
